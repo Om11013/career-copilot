@@ -2,11 +2,9 @@ name: Backend CI
 
 on:
   push:
-    paths:
-      - "backend/**"
+    branches: ["main"]
   pull_request:
-    paths:
-      - "backend/**"
+    types: [opened, synchronize, reopened]
 
 jobs:
   backend:
