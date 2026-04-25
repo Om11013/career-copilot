@@ -1,9 +1,10 @@
-import { askAI } from "@/service/ai";
-import { useState } from "react";
+import { useState } from 'react';
+
+import { askAI } from '@/service/ai';
 
 export default function Home() {
-  const [input, setInput] = useState("");
-  const [response, setResponse] = useState("");
+  const [input, setInput] = useState('');
+  const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleAsk = async () => {
@@ -13,8 +14,8 @@ export default function Home() {
     try {
       const res = await askAI(input);
       setResponse(res);
-    } catch (err) {
-      setResponse("Error connecting to backend");
+    } catch (error) {
+      setResponse(`Error connecting to backend ${error}`);
     }
     setLoading(false);
   };
