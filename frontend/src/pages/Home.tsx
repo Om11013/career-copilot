@@ -1,43 +1,6 @@
-import { useState } from 'react';
-
-import { askAI } from '@/service/ai';
+import { Navigate } from 'react-router-dom';
 
 export default function Home() {
-  const [input, setInput] = useState('');
-  const [response, setResponse] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const handleAsk = async () => {
-    if (!input) return;
-
-    setLoading(true);
-    try {
-      const res = await askAI(input);
-      setResponse(res);
-    } catch (error) {
-      setResponse(`Error connecting to backend ${error}`);
-    }
-    setLoading(false);
-  };
-
-  return (
-    <div style={{ padding: 40 }}>
-      <h1>AI Career Copilot</h1>
-
-      <input
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Ask something..."
-        style={{ padding: 10, width: 300 }}
-      />
-
-      <button onClick={handleAsk} style={{ marginLeft: 10 }}>
-        Ask
-      </button>
-
-      <div style={{ marginTop: 20 }}>
-        {loading ? <p>Loading...</p> : <p>{response}</p>}
-      </div>
-    </div>
-  );
+  // Redirect root to resume analyzer as the main entry point
+  return <Navigate to="/resume-analyzer" replace />;
 }
