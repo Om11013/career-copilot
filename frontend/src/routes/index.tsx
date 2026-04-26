@@ -1,10 +1,55 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 
-import Home from '../pages/Home';
+import MainLayout from '../components/layout/MainLayout';
+import ResumeAnalyzer from '../pages/ResumeAnalyzer';
+import AskAI from '../pages/AskAI';
+import PlaceholderPage from '../pages/PlaceholderPage';
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
+    element: <MainLayout />,
+    children: [
+      {
+        path: '/',
+        element: <Navigate to="/resume-analyzer" replace />,
+      },
+      {
+        path: '/dashboard',
+        element: <PlaceholderPage title="Dashboard" />,
+      },
+      {
+        path: '/resume-analyzer',
+        element: <ResumeAnalyzer />,
+      },
+      {
+        path: '/ask',
+        element: <AskAI />,
+      },
+      {
+        path: '/job-matcher',
+        element: <PlaceholderPage title="Job Matcher" />,
+      },
+      {
+        path: '/resume-tailor',
+        element: <PlaceholderPage title="Resume Tailor" />,
+      },
+      {
+        path: '/career-agent',
+        element: <PlaceholderPage title="Career Agent" />,
+      },
+      {
+        path: '/insights',
+        element: <PlaceholderPage title="Insights" />,
+      },
+      {
+        path: '/resume-versions',
+        element: <PlaceholderPage title="Resume Versions" />,
+      },
+      {
+        path: '/application-tracker',
+        element: <PlaceholderPage title="Application Tracker" />,
+      },
+    ],
   },
 ]);
