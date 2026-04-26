@@ -32,7 +32,7 @@ export function InsightCard({
           {title}
         </CardTitle>
       </CardHeader>
-      <CardContent className="pt-6 text-[#5C5C5C]">{children}</CardContent>
+      <CardContent className="text-[#5C5C5C]">{children}</CardContent>
     </Card>
   );
 }
