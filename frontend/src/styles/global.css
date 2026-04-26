@@ -4,7 +4,7 @@
 @import '@fontsource-variable/geist';
 
 @custom-variant dark (&:is(.dark *));
-@config "../tailwind.config.js";
+@config "../../tailwind.config.js";
 
 @theme inline {
   --font-heading: var(--font-sans);

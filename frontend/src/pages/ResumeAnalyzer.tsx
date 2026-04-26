@@ -9,79 +9,44 @@ import {
 } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
-import { analyzeResume } from '@/service/resume';
-import { UploadCard } from '@/components/resume/UploadCard';
-import { TextareaInput } from '@/components/resume/TextareaInput';
-import { AnalyzeButton } from '@/components/resume/AnalyzeButton';
-import { InsightCard } from '@/components/resume/InsightCard';
-import { LoaderSkeleton } from '@/components/resume/LoaderSkeleton';
-
-interface AnalysisResult {
-  summary?: string;
-  experience?: string;
-  skills?: Record<string, string[]>;
-  strengths: string[];
-  weaknesses: string[];
-  suggestions: string[];
-  score: number;
-  error?: string;
-  raw?: string;
-}
+import { UploadCard } from '@/components/feature/UploadCard';
+import { TextareaInput } from '@/components/feature/TextareaInput';
+import { AnalyzeButton } from '@/components/feature/AnalyzeButton';
+import { InsightCard } from '@/components/feature/InsightCard';
+import { LoaderSkeleton } from '@/components/feature/LoaderSkeleton';
+import { useAnalyzeResume } from '@/hooks/useAnalyzeResume';
 
 export default function ResumeAnalyzer() {
   const [resumeText, setResumeText] = useState('');
   const [file, setFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<AnalysisResult | null>(null);
 
+  const { analyze, clearResult, result, loading, error } = useAnalyzeResume();
   const resultsRef = useRef<HTMLDivElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setFile(e.target.files[0]);
-      setResult(null); // Clear previous results when input changes
+      clearResult();
     }
   };
 
   const handleTextChange = (val: string) => {
     setResumeText(val);
-    setResult(null); // Clear previous results when input changes
+    clearResult();
   };
 
   const handleClearFile = () => {
     setFile(null);
-    setResult(null);
+    clearResult();
   };
 
   const handleClearText = () => {
     setResumeText('');
-    setResult(null);
+    clearResult();
   };
 
-  const handleAnalyze = async () => {
-    if (!resumeText.trim() && !file) return;
-
-    setLoading(true);
-    setError(null);
-    setResult(null);
-
-    try {
-      const data = await analyzeResume(resumeText, file);
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setResult(data);
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Failed to connect to the backend.');
-      }
-    } finally {
-      setLoading(false);
-    }
+  const handleAnalyze = () => {
+    analyze(resumeText, file);
   };
 
   // Scroll to results when they appear on mobile
@@ -131,7 +96,7 @@ export default function ResumeAnalyzer() {
                   file={file}
                   onFileChange={handleFileChange}
                   onClear={handleClearFile}
-                  disabled={loading || !!resumeText.trim()} // Disabled if text is populated
+                  disabled={loading || !!resumeText.trim()}
                 />
 
                 <div className="relative flex items-center py-2">
@@ -146,7 +111,7 @@ export default function ResumeAnalyzer() {
                   value={resumeText}
                   onChange={handleTextChange}
                   onClear={handleClearText}
-                  disabled={loading || !!file} // Disabled if file is populated
+                  disabled={loading || !!file}
                 />
 
                 {error && (
@@ -159,7 +124,7 @@ export default function ResumeAnalyzer() {
                 <AnalyzeButton
                   onClick={handleAnalyze}
                   loading={loading}
-                  disabled={(!file && !resumeText.trim()) || !!result} // Disabled if empty OR result already generated
+                  disabled={(!file && !resumeText.trim()) || !!result}
                 />
               </div>
             </div>
@@ -188,9 +153,7 @@ export default function ResumeAnalyzer() {
 
             {result && !loading && (
               <div className="space-y-6">
-                {/* Score & Summary Row */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Score Card */}
                   <div className="md:col-span-1">
                     <InsightCard
                       icon={<FileText className="w-5 h-5" />}
@@ -213,7 +176,6 @@ export default function ResumeAnalyzer() {
                     </InsightCard>
                   </div>
 
-                  {/* Summary Card */}
                   <div className="md:col-span-2">
                     <InsightCard
                       title="Professional Summary"
@@ -228,7 +190,6 @@ export default function ResumeAnalyzer() {
                   </div>
                 </div>
 
-                {/* Experience */}
                 <InsightCard
                   title="Experience Analysis"
                   icon={<Activity className="w-5 h-5" />}
@@ -239,7 +200,6 @@ export default function ResumeAnalyzer() {
                   </p>
                 </InsightCard>
 
-                {/* Skills Grid */}
                 <InsightCard
                   title="Extracted Skills"
                   icon={<Target className="w-5 h-5" />}
@@ -280,7 +240,6 @@ export default function ResumeAnalyzer() {
                   )}
                 </InsightCard>
 
-                {/* Strengths & Weaknesses */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <InsightCard
                     title="Key Strengths"
@@ -327,7 +286,6 @@ export default function ResumeAnalyzer() {
                   </InsightCard>
                 </div>
 
-                {/* Suggestions */}
                 <InsightCard
                   title="Actionable Suggestions"
                   icon={<Lightbulb className="w-5 h-5" />}
@@ -363,7 +321,6 @@ export default function ResumeAnalyzer() {
   );
 }
 
-// Minimal icon component to avoid extra imports
 function SparklesIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Loader2, Send, BotMessageSquare } from 'lucide-react';
 
-import { askAI } from '@/service/ai';
-import { InsightCard } from '@/components/resume/InsightCard';
+import { askAI } from '@/services/aiService';
+import { InsightCard } from '@/components/feature/InsightCard';
 
 export default function AskAI() {
   const [query, setQuery] = useState('');
