@@ -1,73 +1,63 @@
-# React + TypeScript + Vite
+# AI Career Copilot
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AI Career Copilot is a full-stack application designed to help professionals optimize their resumes and navigate their career paths using the power of AI. 
 
-Currently, two official plugins are available:
+The current Phase 1 release features a robust **Resume Analyzer** that parses PDF uploads while preserving formatting, queries Gemini AI for structured insights, and presents actionable feedback (including categorized skills, strengths, weaknesses, and a resume score out of 10) in a beautiful, responsive dashboard.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features (Phase 1)
+- **Advanced Resume Parsing:** Upload a PDF and automatically extract text while preserving layout using `pdfplumber`.
+- **Structured AI Insights:** Get granular feedback on Strengths, Weaknesses, Experience Analysis, and Extracted Skills using Google's Gemini Flash model.
+- **Ask AI:** A built-in AI assistant for any quick career-related queries.
+- **Modern UI:** Built with React 19, Tailwind CSS 4, and `shadcn/ui` for a premium, responsive user experience.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack & Core Libraries
 
-## Expanding the ESLint configuration
+### Frontend
+- **Framework:** React (`^19.2.4`) + TypeScript (`~6.0.2`)
+- **Build Tool:** Vite (`^8.0.4`)
+- **Styling:** Tailwind CSS (`^4.2.4`)
+- **UI Components:** `shadcn/ui` (`^4.5.0`)
+- **Icons:** `lucide-react` (`^1.11.0`)
+- **Routing:** `react-router-dom` (`^7.13.2`)
+- **Networking:** `axios` (`^1.15.0`)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Backend
+- **Framework:** FastAPI (`0.135.3`) with Uvicorn (`0.44.0`)
+- **AI Integration:** `google-generativeai` (`0.8.6`)
+- **PDF Extraction:** `pdfplumber` (`0.11.9`)
+- **File Uploads:** `python-multipart` (`0.0.26`)
+- **Environment:** `python-dotenv` (`1.2.2`)
+- **Code Quality:** `black`, `isort`, `flake8`, `mypy`
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Setup Instructions
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 1. Backend Setup
+Navigate to the `backend` directory, set up your virtual environment, and run the FastAPI server:
+
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+*Make sure to create a `.env` file in the `backend` directory with your `GEMINI_API_KEY`.*
+
+Start the backend server:
+```bash
+uvicorn main:app --reload
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Frontend Setup
+In a new terminal, navigate to the `frontend` directory and start the Vite dev server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cd frontend
+npm install
+npm run dev
 ```
+
+The application will be available at `http://localhost:5173`.
