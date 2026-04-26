@@ -1,30 +1,26 @@
-import io
 import json
 
-import pdfplumber
-
 from services.llm_service import ask_llm
+from services.pdf_service import extract_text_from_pdf
 
 
-def extract_text_from_pdf(file_bytes: bytes) -> str:
-    text = ""
-    try:
-        with pdfplumber.open(io.BytesIO(file_bytes)) as pdf:
-            for page in pdf.pages:
-                # layout=True preserves visual layout, spaces, and bullet formatting
-                page_text = page.extract_text(layout=True)
-                if page_text:
-                    text += page_text + "\n"
-    except Exception as e:
-        print(f"PDF extraction error: {e}")
-    return text
+def process_and_analyze_resume(file_bytes: bytes | None, filename: str | None, raw_text: str | None):
+    final_text = ""
+
+    if file_bytes and filename and filename.endswith(".pdf"):
+        final_text = extract_text_from_pdf(file_bytes)
+    elif raw_text:
+        final_text = raw_text
+
+    if not final_text.strip():
+        return {"error": "No resume content provided. Please upload a PDF or paste text."}
+
+    return _analyze_resume_prompt(final_text)
 
 
-def analyze_resume(resume_text: str):
-    print(resume_text)
+def _analyze_resume_prompt(resume_text: str):
     prompt = f"""
-    You are an expert resume analyzer. Analyze the resume below and provide
-    structured insights.
+    You are an expert resume analyzer. Analyze the resume below and provide structured insights.
 
     Resume:
     {resume_text}
@@ -43,15 +39,10 @@ def analyze_resume(resume_text: str):
     }}
 
     RULES:
-    * Do NOT hallucinate missing sections. If a section is missing, explicitly
-      state 'Not found' in the array or string.
-    * Keep output concise but informative.
-    * Do NOT include unnecessary explanations.
-    * Output ONLY the raw JSON object.
+    * Do NOT hallucinate missing sections. If a section is missing, explicitly state 'Not found' in the array or string.
+    * Output ONLY raw JSON.
     """
-
     response = ask_llm(prompt)
-
     try:
         return json.loads(response)
     except Exception:
