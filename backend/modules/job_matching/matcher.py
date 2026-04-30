@@ -9,15 +9,15 @@ def get_insights(resume_data: Dict[str, Any], jd: ParsedJD, score: int, matched:
     prompt = f"""
     You are an expert career coach. A user has applied for the role of "{jd.role}".
     Based on their resume and the job description, their deterministic match score is {score}/100.
-    
+
     Matched Skills: {matched}
     Missing Skills: {missing}
-    
+
     Provide a brief, encouraging insight containing:
     1. Why it's a good match
     2. What's missing
     3. An improvement suggestion
-    
+
     Keep it under 3-4 sentences.
     """
     return ask_llm(prompt).strip()
