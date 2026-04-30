@@ -1,5 +1,5 @@
 import React from 'react';
-import { UploadCloud, FileText, X } from 'lucide-react';
+import { UploadCloud, FileText, X, Eye } from 'lucide-react';
 
 interface UploadCardProps {
   file: File | null;
@@ -31,14 +31,30 @@ export function UploadCard({
               </p>
             </div>
           </div>
-          <button
-            onClick={onClear}
-            disabled={disabled}
-            className="p-2 rounded-full hover:bg-[#C97A5D]/10 text-[#829AB1] hover:text-[#C97A5D] transition-colors disabled:opacity-50"
-            aria-label="Remove file"
-          >
-            <X className="h-5 w-5" />
-          </button>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                if (file) {
+                  const url = URL.createObjectURL(file);
+                  window.open(url, '_blank');
+                }
+              }}
+              disabled={disabled}
+              className="p-2 rounded-full hover:bg-[#829AB1]/10 text-[#829AB1] transition-colors disabled:opacity-50"
+              aria-label="View file"
+            >
+              <Eye className="h-5 w-5" />
+            </button>
+            <button
+              onClick={onClear}
+              disabled={disabled}
+              className="p-2 rounded-full hover:bg-[#C97A5D]/10 text-[#829AB1] hover:text-[#C97A5D] transition-colors disabled:opacity-50"
+              aria-label="Remove file"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       ) : (
         <label className="flex flex-col items-center justify-center p-8 text-center cursor-pointer relative z-10 h-full">

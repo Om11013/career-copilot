@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import { analyzeResume as apiAnalyzeResume } from '@/services/resumeService';
 import type { AnalysisResult } from '@/types/resume.types';
@@ -41,10 +41,14 @@ export function useAnalyzeResume() {
     }
   };
 
-  const clearResult = () => {
+  const clearResult = useCallback(() => {
     setResult(null);
     setError(null);
-  };
+  }, []);
+
+  const setResultData = useCallback((data: AnalysisResult | null) => {
+    setResult(data);
+  }, []);
 
   return {
     analyze,
@@ -52,5 +56,6 @@ export function useAnalyzeResume() {
     result,
     loading,
     error,
+    setResultData,
   };
 }
