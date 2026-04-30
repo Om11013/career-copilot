@@ -15,13 +15,29 @@ import { AnalyzeButton } from '@/components/feature/AnalyzeButton';
 import { InsightCard } from '@/components/feature/InsightCard';
 import { LoaderSkeleton } from '@/components/feature/LoaderSkeleton';
 import { useAnalyzeResume } from '@/hooks/useAnalyzeResume';
+import { getResumeFromDB, clearResumeFromDB } from '@/utils/indexedDB';
+import type { AnalysisResult } from '@/types/resume.types';
 
 export default function ResumeAnalyzer() {
   const [resumeText, setResumeText] = useState('');
   const [file, setFile] = useState<File | null>(null);
 
-  const { analyze, clearResult, result, loading, error } = useAnalyzeResume();
+  const { analyze, clearResult, result, loading, error, setResultData } =
+    useAnalyzeResume();
   const resultsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    getResumeFromDB().then((data) => {
+      if (data) {
+        if (data.file) {
+          setFile(data.file as File);
+        }
+        if (data.parsedData) {
+          setResultData(data.parsedData as AnalysisResult);
+        }
+      }
+    });
+  }, [setResultData]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -38,11 +54,13 @@ export default function ResumeAnalyzer() {
   const handleClearFile = () => {
     setFile(null);
     clearResult();
+    clearResumeFromDB();
   };
 
   const handleClearText = () => {
     setResumeText('');
     clearResult();
+    clearResumeFromDB();
   };
 
   const handleAnalyze = () => {
