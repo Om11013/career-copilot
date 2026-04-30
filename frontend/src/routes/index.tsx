@@ -5,6 +5,7 @@ import ResumeAnalyzer from '../pages/ResumeAnalyzer';
 import AskAI from '../pages/AskAI';
 import PlaceholderPage from '../pages/PlaceholderPage';
 import JobMatcher from '../pages/JobMatcher';
+import CareerAgent from '../pages/CareerAgent';
 
 export const router = createBrowserRouter([
   {
@@ -37,7 +38,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/career-agent',
-        element: <PlaceholderPage title="Career Agent" />,
+        element: <CareerAgent />,
       },
       {
         path: '/insights',
