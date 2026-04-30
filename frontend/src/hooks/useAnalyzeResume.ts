@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { analyzeResume as apiAnalyzeResume } from '@/services/resumeService';
 import type { AnalysisResult } from '@/types/resume.types';
+import { saveResumeToDB } from '@/utils/indexedDB';
 
 export function useAnalyzeResume() {
   const [loading, setLoading] = useState(false);
@@ -21,6 +22,13 @@ export function useAnalyzeResume() {
         setError(data.error);
       } else {
         setResult(data);
+        // Save to IndexedDB
+        try {
+          await saveResumeToDB(file, data);
+        } catch (dbErr) {
+          // eslint-disable-next-line no-console
+          console.error('Failed to save to IndexedDB:', dbErr);
+        }
       }
     } catch (err) {
       if (err instanceof Error) {
