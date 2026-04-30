@@ -4,6 +4,7 @@ import MainLayout from '../components/layout/MainLayout';
 import ResumeAnalyzer from '../pages/ResumeAnalyzer';
 import AskAI from '../pages/AskAI';
 import PlaceholderPage from '../pages/PlaceholderPage';
+import JobMatcher from '../pages/JobMatcher';
 
 export const router = createBrowserRouter([
   {
@@ -28,7 +29,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/job-matcher',
-        element: <PlaceholderPage title="Job Matcher" />,
+        element: <JobMatcher />,
       },
       {
         path: '/resume-tailor',

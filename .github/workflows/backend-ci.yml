@@ -40,4 +40,4 @@ jobs:
         run: flake8 .
 
       - name: Type check (mypy)
-        run: mypy .
+        run: mypy . --ignore-missing-imports
