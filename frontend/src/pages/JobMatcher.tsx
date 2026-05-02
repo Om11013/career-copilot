@@ -13,7 +13,7 @@ import { matchJob } from '@/services/jobMatchService';
 import type { JobMatchResponse } from '@/services/jobMatchService';
 import { Badge } from '@/components/ui/badge';
 import { InsightCard } from '@/components/feature/InsightCard';
-import { LoaderSkeleton } from '@/components/feature/LoaderSkeleton';
+import LoaderSkeleton from '@/components/feature/LoaderSkeleton';
 
 export default function JobMatcher() {
   const navigate = useNavigate();

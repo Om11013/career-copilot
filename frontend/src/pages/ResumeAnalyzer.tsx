@@ -13,7 +13,7 @@ import { UploadCard } from '@/components/feature/UploadCard';
 import { TextareaInput } from '@/components/feature/TextareaInput';
 import { AnalyzeButton } from '@/components/feature/AnalyzeButton';
 import { InsightCard } from '@/components/feature/InsightCard';
-import { LoaderSkeleton } from '@/components/feature/LoaderSkeleton';
+import LoaderSkeleton from '@/components/feature/LoaderSkeleton';
 import { useAnalyzeResume } from '@/hooks/useAnalyzeResume';
 import { getResumeFromDB, clearResumeFromDB } from '@/utils/indexedDB';
 import type { AnalysisResult } from '@/types/resume.types';
