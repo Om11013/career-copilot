@@ -6,7 +6,7 @@ import {
   type Message,
 } from '@/components/feature/agent/ChatWindow';
 import { InputBox } from '@/components/feature/agent/InputBox';
-import { callOrchestrator } from '@/services/orchestratorApi';
+import { callOrchestrator } from '@/services/orchestratorService';
 import {
   getResumeFromDB,
   clearResumeFromDB,
