@@ -23,6 +23,7 @@ def run_orchestrator(input_payload: dict):
 
     # Step 3 — Detect intent
     intent = detect_intent(user_query)
+    print(f"Intent: {intent}")
 
     # Step 4 — Get tool plan
     tool_plan = INTENT_TOOL_MAP.get(intent, ["reasoning"])
@@ -59,6 +60,16 @@ def run_orchestrator(input_payload: dict):
             return {"response": result["response"]}
 
     # Step 6 — Default return (if no reasoning used)
+    match = context_state.get("match_result")
+    if intent == "job_matching" and isinstance(match, dict):
+        score = match.get("match_score", 0)
+        matched = ", ".join(match.get("matched_skills", [])) or "None"
+        missing = ", ".join(match.get("missing_skills", [])) or "None"
+        insight = match.get("insight", "")
+
+        response_text = f"**Match Score:** {score}/10\n\n" f"**Matched Skills:** {matched}\n\n" f"**Missing Skills:** {missing}\n\n" f"**Insight:** {insight}"
+        return {"intent": intent, "response": response_text, "data": context_state}
+
     return {"intent": intent, "data": context_state}
 
 
@@ -88,10 +99,11 @@ Match Result:
 {match_result}
 
 Instructions:
-- Answer the user clearly and directly
-- Explain gaps if present
-- Suggest improvements if needed
-- Do NOT output raw JSON
+- Answer the user clearly, directly, and concisely.
+- Strictly limit your response to a maximum of 200 words. Get straight to the point.
+- Explain gaps if present.
+- Suggest improvements if needed.
+- Do NOT output raw JSON.
 """
 
     return prompt

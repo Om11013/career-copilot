@@ -1,5 +1,7 @@
 import React from 'react';
 import { User, Bot } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface MessageBubbleProps {
   role: 'user' | 'assistant';
@@ -15,9 +17,9 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
   const renderContent = () => {
     if (typeof content === 'string') {
       return (
-        <p className="whitespace-pre-wrap leading-relaxed text-[15px]">
-          {content}
-        </p>
+        <div className="prose prose-sm prose-slate max-w-none leading-relaxed text-[15px]">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+        </div>
       );
     }
     // If it's structured data
@@ -33,7 +35,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
       className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'} mb-4`}
     >
       <div
-        className={`flex max-w-[85%] ${isUser ? 'flex-row-reverse' : 'flex-row'} gap-3 items-end`}
+        className={`flex max-w-[85%] sm:max-w-[75%] md:max-w-[70%] lg:max-w-[65%] ${isUser ? 'flex-row-reverse' : 'flex-row'} gap-3 items-end`}
       >
         <div
           className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${isUser ? 'bg-[#C97A5D] text-white' : 'bg-[#829AB1] text-white'}`}
@@ -41,7 +43,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
           {isUser ? <User className="w-5 h-5" /> : <Bot className="w-5 h-5" />}
         </div>
         <div
-          className={`px-4 py-3 rounded-2xl ${isUser ? 'bg-[#FAF7F5] border border-[#829AB1]/20 text-[#4A4A4A] rounded-br-none' : 'bg-white border border-[#829AB1]/10 shadow-sm text-[#4A4A4A] rounded-bl-none'}`}
+          className={`px-4 py-3 rounded-2xl wrap-break-word overflow-hidden ${isUser ? 'bg-[#FAF7F5] border border-[#829AB1]/20 text-[#4A4A4A] rounded-br-none' : 'bg-white border border-[#829AB1]/10 shadow-sm text-[#4A4A4A] rounded-bl-none'}`}
         >
           {renderContent()}
         </div>

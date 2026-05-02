@@ -1,11 +1,26 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
+import React, { Suspense } from 'react';
 
 import MainLayout from '../components/layout/MainLayout';
-import ResumeAnalyzer from '../pages/ResumeAnalyzer';
-import AskAI from '../pages/AskAI';
-import PlaceholderPage from '../pages/PlaceholderPage';
-import JobMatcher from '../pages/JobMatcher';
-import CareerAgent from '../pages/CareerAgent';
+import LoaderSkeleton from '../components/feature/LoaderSkeleton';
+
+const ResumeAnalyzer = React.lazy(() => import('../pages/ResumeAnalyzer'));
+const AskAI = React.lazy(() => import('../pages/AskAI'));
+const JobMatcher = React.lazy(() => import('../pages/JobMatcher'));
+const CareerAgent = React.lazy(() => import('../pages/CareerAgent'));
+const PlaceholderPage = React.lazy(() => import('../pages/PlaceholderPage'));
+
+const SuspenseWrapper = ({ children }: { children: React.ReactNode }) => (
+  <Suspense
+    fallback={
+      <div className="flex h-full w-full items-center justify-center">
+        <LoaderSkeleton />
+      </div>
+    }
+  >
+    {children}
+  </Suspense>
+);
 
 export const router = createBrowserRouter([
   {
@@ -18,39 +33,75 @@ export const router = createBrowserRouter([
       },
       {
         path: '/dashboard',
-        element: <PlaceholderPage title="Dashboard" />,
+        element: (
+          <SuspenseWrapper>
+            <PlaceholderPage title="Dashboard" />
+          </SuspenseWrapper>
+        ),
       },
       {
         path: '/resume-analyzer',
-        element: <ResumeAnalyzer />,
+        element: (
+          <SuspenseWrapper>
+            <ResumeAnalyzer />
+          </SuspenseWrapper>
+        ),
       },
       {
         path: '/ask',
-        element: <AskAI />,
+        element: (
+          <SuspenseWrapper>
+            <AskAI />
+          </SuspenseWrapper>
+        ),
       },
       {
         path: '/job-matcher',
-        element: <JobMatcher />,
+        element: (
+          <SuspenseWrapper>
+            <JobMatcher />
+          </SuspenseWrapper>
+        ),
       },
       {
         path: '/resume-tailor',
-        element: <PlaceholderPage title="Resume Tailor" />,
+        element: (
+          <SuspenseWrapper>
+            <PlaceholderPage title="Resume Tailor" />
+          </SuspenseWrapper>
+        ),
       },
       {
         path: '/career-agent',
-        element: <CareerAgent />,
+        element: (
+          <SuspenseWrapper>
+            <CareerAgent />
+          </SuspenseWrapper>
+        ),
       },
       {
         path: '/insights',
-        element: <PlaceholderPage title="Insights" />,
+        element: (
+          <SuspenseWrapper>
+            <PlaceholderPage title="Insights" />
+          </SuspenseWrapper>
+        ),
       },
       {
         path: '/resume-versions',
-        element: <PlaceholderPage title="Resume Versions" />,
+        element: (
+          <SuspenseWrapper>
+            <PlaceholderPage title="Resume Versions" />
+          </SuspenseWrapper>
+        ),
       },
       {
         path: '/application-tracker',
-        element: <PlaceholderPage title="Application Tracker" />,
+        element: (
+          <SuspenseWrapper>
+            <PlaceholderPage title="Application Tracker" />
+          </SuspenseWrapper>
+        ),
       },
     ],
   },

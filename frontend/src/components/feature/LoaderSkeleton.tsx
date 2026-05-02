@@ -1,6 +1,6 @@
 import { Sparkles } from 'lucide-react';
 
-export function LoaderSkeleton() {
+export default function LoaderSkeleton() {
   return (
     <div className="flex flex-col items-center justify-center p-12 space-y-6 animate-in fade-in duration-500">
       <div className="relative p-6 bg-[#F3E9E0] border border-[#C97A5D]/20 rounded-full shadow-sm animate-pulse">

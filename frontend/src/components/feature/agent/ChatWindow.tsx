@@ -47,7 +47,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
 
       {loading && (
         <div className="flex w-full justify-start mb-4">
-          <div className="flex max-w-[85%] flex-row gap-3 items-end">
+          <div className="flex max-w-[85%] sm:max-w-[75%] md:max-w-[70%] lg:max-w-[65%] flex-row gap-3 items-end">
             <div className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-[#829AB1] text-white">
               <Loader2 className="w-4 h-4 animate-spin" />
             </div>
