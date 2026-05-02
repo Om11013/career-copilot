@@ -23,7 +23,6 @@ def run_orchestrator(input_payload: dict):
 
     # Step 3 — Detect intent
     intent = detect_intent(user_query)
-    print(f"Intent: {intent}")
 
     # Step 4 — Get tool plan
     tool_plan = INTENT_TOOL_MAP.get(intent, ["reasoning"])

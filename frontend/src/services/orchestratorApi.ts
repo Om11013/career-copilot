@@ -35,5 +35,11 @@ export const callOrchestrator = async (payload: OrchestratorPayload) => {
     );
   }
 
-  return response.json();
+  const responseData = await response.json();
+
+  if (responseData.error) {
+    throw new Error(responseData.error);
+  }
+
+  return responseData;
 };

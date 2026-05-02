@@ -12,5 +12,5 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
                 if page_text:
                     text += page_text + "\n"
     except Exception as e:
-        print(f"PDF extraction error: {e}")
+        raise Exception(f"PDF extraction error: {e}") from e
     return text
