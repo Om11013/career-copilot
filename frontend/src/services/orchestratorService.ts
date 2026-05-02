@@ -1,3 +1,7 @@
+import apiClient from './apiClient';
+
+import { API_ROUTES } from '@/constants/api';
+
 export interface OrchestratorPayload {
   user_query: string;
   resume_file?: File | null;
@@ -23,23 +27,15 @@ export const callOrchestrator = async (payload: OrchestratorPayload) => {
     formData.append('job_description', payload.job_description);
   }
 
-  const response = await fetch('http://localhost:8000/ai/orchestrate', {
-    method: 'POST',
-    body: formData,
+  const response = await apiClient.post(API_ROUTES.ORCHESTRATE, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   });
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => null);
-    throw new Error(
-      errorData?.error || 'Failed to communicate with the orchestrator.',
-    );
+  if (response.data?.error) {
+    throw new Error(response.data.error);
   }
 
-  const responseData = await response.json();
-
-  if (responseData.error) {
-    throw new Error(responseData.error);
-  }
-
-  return responseData;
+  return response.data;
 };
