@@ -44,6 +44,7 @@ def _analyze_resume_prompt(resume_text: str):
     """
     response = ask_llm(prompt)
     try:
-        return json.loads(response)
+        clean_text = response.replace("```json", "").replace("```", "").strip()
+        return json.loads(clean_text)
     except Exception:
         return {"error": "Invalid response from AI", "raw": response}
