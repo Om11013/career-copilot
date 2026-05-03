@@ -20,7 +20,7 @@ const navigation = [
   { name: 'Job Matcher', href: '/job-matcher', icon: Briefcase },
   { name: 'Resume Tailor', href: '/resume-tailor', icon: Edit },
   { name: 'Career Agent', href: '/career-agent', icon: Bot },
-  { name: 'Ask AI', href: '/ask', icon: Lightbulb },
+  { name: 'Ask AI', href: '/ask', icon: Lightbulb, localOnly: true },
   { name: 'Insights', href: '/insights', icon: Lightbulb },
   { name: 'Resume Versions', href: '/resume-versions', icon: Layers },
   {
@@ -76,31 +76,44 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
 
         {/* Navigation */}
         <nav className="flex-1 space-y-1.5 overflow-y-auto pr-2 custom-scrollbar">
-          {navigation.map((item) => {
-            const isActive = location.pathname === item.href;
-            return (
-              <Link
-                key={item.name}
-                to={item.href}
-                onClick={() => setIsOpen(false)}
-              >
-                <Button
-                  variant="ghost"
-                  className={cn(
-                    'w-full justify-start gap-3 px-4 py-2.5 text-sm transition-all duration-300 rounded-xl',
-                    isActive
-                      ? 'bg-[#C97A5D]/10 text-[#C97A5D] font-semibold border border-[#C97A5D]/20 shadow-sm'
-                      : 'text-[#829AB1] hover:bg-[#829AB1]/10 hover:text-[#4A4A4A] border border-transparent',
-                  )}
+          {navigation
+            .filter((item) => {
+              if (item.localOnly) {
+                const isLocal =
+                  window.location.hostname === 'localhost' ||
+                  window.location.hostname === '127.0.0.1';
+                return isLocal;
+              }
+              return true;
+            })
+            .map((item) => {
+              const isActive = location.pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setIsOpen(false)}
                 >
-                  <item.icon
-                    className={cn('h-4 w-4', isActive ? 'text-[#C97A5D]' : '')}
-                  />
-                  {item.name}
-                </Button>
-              </Link>
-            );
-          })}
+                  <Button
+                    variant="ghost"
+                    className={cn(
+                      'w-full justify-start gap-3 px-4 py-2.5 text-sm transition-all duration-300 rounded-xl',
+                      isActive
+                        ? 'bg-[#C97A5D]/10 text-[#C97A5D] font-semibold border border-[#C97A5D]/20 shadow-sm'
+                        : 'text-[#829AB1] hover:bg-[#829AB1]/10 hover:text-[#4A4A4A] border border-transparent',
+                    )}
+                  >
+                    <item.icon
+                      className={cn(
+                        'h-4 w-4',
+                        isActive ? 'text-[#C97A5D]' : '',
+                      )}
+                    />
+                    {item.name}
+                  </Button>
+                </Link>
+              );
+            })}
         </nav>
       </div>
     </>
