@@ -8,7 +8,6 @@ const ResumeAnalyzer = React.lazy(() => import('../pages/ResumeAnalyzer'));
 const AskAI = React.lazy(() => import('../pages/AskAI'));
 const JobMatcher = React.lazy(() => import('../pages/JobMatcher'));
 const CareerAgent = React.lazy(() => import('../pages/CareerAgent'));
-const PlaceholderPage = React.lazy(() => import('../pages/PlaceholderPage'));
 
 const SuspenseWrapper = ({ children }: { children: React.ReactNode }) => (
   <Suspense
@@ -29,15 +28,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Navigate to="/resume-analyzer" replace />,
-      },
-      {
-        path: '/dashboard',
-        element: (
-          <SuspenseWrapper>
-            <PlaceholderPage title="Dashboard" />
-          </SuspenseWrapper>
-        ),
+        element: <Navigate to="/career-agent" replace />,
       },
       {
         path: '/resume-analyzer',
@@ -64,42 +55,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/resume-tailor',
-        element: (
-          <SuspenseWrapper>
-            <PlaceholderPage title="Resume Tailor" />
-          </SuspenseWrapper>
-        ),
-      },
-      {
         path: '/career-agent',
         element: (
           <SuspenseWrapper>
             <CareerAgent />
-          </SuspenseWrapper>
-        ),
-      },
-      {
-        path: '/insights',
-        element: (
-          <SuspenseWrapper>
-            <PlaceholderPage title="Insights" />
-          </SuspenseWrapper>
-        ),
-      },
-      {
-        path: '/resume-versions',
-        element: (
-          <SuspenseWrapper>
-            <PlaceholderPage title="Resume Versions" />
-          </SuspenseWrapper>
-        ),
-      },
-      {
-        path: '/application-tracker',
-        element: (
-          <SuspenseWrapper>
-            <PlaceholderPage title="Application Tracker" />
           </SuspenseWrapper>
         ),
       },

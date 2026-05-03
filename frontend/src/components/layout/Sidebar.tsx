@@ -1,33 +1,17 @@
 import { Link, useLocation } from 'react-router-dom';
-import {
-  LayoutDashboard,
-  FileText,
-  Briefcase,
-  Edit,
-  Bot,
-  Lightbulb,
-  Layers,
-  ListChecks,
-  X,
-} from 'lucide-react';
+import { FileText, Briefcase, Bot, Lightbulb, X } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
 import { Button } from '@/components/ui/button';
 
-const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Resume Analyzer', href: '/resume-analyzer', icon: FileText },
-  { name: 'Job Matcher', href: '/job-matcher', icon: Briefcase },
-  { name: 'Resume Tailor', href: '/resume-tailor', icon: Edit },
+const mainNavigation = [
   { name: 'Career Agent', href: '/career-agent', icon: Bot },
   { name: 'Ask AI', href: '/ask', icon: Lightbulb, localOnly: true },
-  { name: 'Insights', href: '/insights', icon: Lightbulb },
-  { name: 'Resume Versions', href: '/resume-versions', icon: Layers },
-  {
-    name: 'Application Tracker',
-    href: '/application-tracker',
-    icon: ListChecks,
-  },
+];
+
+const toolNavigation = [
+  { name: 'Tool: Resume Analyzer', href: '/resume-analyzer', icon: FileText },
+  { name: 'Tool: Job Matcher', href: '/job-matcher', icon: Briefcase },
 ];
 
 interface SidebarProps {
@@ -75,18 +59,10 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 space-y-1.5 overflow-y-auto pr-2 custom-scrollbar">
-          {navigation
-            .filter((item) => {
-              if (item.localOnly) {
-                const isLocal =
-                  window.location.hostname === 'localhost' ||
-                  window.location.hostname === '127.0.0.1';
-                return isLocal;
-              }
-              return true;
-            })
-            .map((item) => {
+        <nav className="flex-1 space-y-6 overflow-y-auto pr-2 custom-scrollbar">
+          {/* Main Navigation */}
+          <div className="space-y-1.5">
+            {mainNavigation.map((item) => {
               const isActive = location.pathname === item.href;
               return (
                 <Link
@@ -114,6 +90,42 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
                 </Link>
               );
             })}
+          </div>
+
+          {/* Tools Section */}
+          <div className="space-y-1.5">
+            <h3 className="px-4 text-[10px] font-bold uppercase tracking-wider text-[#829AB1]/60 mb-2">
+              Tools (Advanced / Debug)
+            </h3>
+            {toolNavigation.map((item) => {
+              const isActive = location.pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Button
+                    variant="ghost"
+                    className={cn(
+                      'w-full justify-start gap-3 px-4 py-2 text-xs transition-all duration-300 rounded-xl',
+                      isActive
+                        ? 'bg-[#829AB1]/10 text-[#4A4A4A] font-medium border border-[#829AB1]/20'
+                        : 'text-[#829AB1]/70 hover:bg-[#829AB1]/5 hover:text-[#4A4A4A] border border-transparent',
+                    )}
+                  >
+                    <item.icon
+                      className={cn(
+                        'h-3.5 w-3.5',
+                        isActive ? 'text-[#829AB1]' : '',
+                      )}
+                    />
+                    {item.name}
+                  </Button>
+                </Link>
+              );
+            })}
+          </div>
         </nav>
       </div>
     </>
