@@ -13,7 +13,7 @@ Unlike standard AI apps that follow a linear path, this system implements a **Re
 - **📄 Advanced Resume Analysis:** Extracts structured data (skills, strengths, weaknesses) while preserving context from PDF uploads.
 - **🎯 Intelligent Job Matching:** Calculates precise match scores and provides actionable "AI Insights" on how to bridge the gap.
 - **💬 Career Agent Chat:** A unified chat interface where you can talk to your resume data and get career advice.
-- **⚡ Dual-LLM Resilience:** Uses **Groq (Llama 3.3 70B)** as the primary engine for lightning-fast reasoning, with a seamless fallback to **Google Gemini 1.5 Flash**.
+- **⚡ Dual-LLM Resilience:** Uses **Groq (Llama 3.3 70B)** as the primary engine for lightning-fast reasoning, with a seamless fallback to **Google Gemini Flash**.
 
 ---
 
