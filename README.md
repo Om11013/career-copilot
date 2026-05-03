@@ -1,14 +1,19 @@
 # AI Career Copilot
 
-AI Career Copilot is a full-stack application designed to help professionals optimize their resumes and navigate their career paths using the power of AI. 
+AI Career Copilot is a production-grade, agentic application designed to help professionals optimize their resumes, match with jobs, and navigate their career paths using autonomous AI reasoning.
 
-The current Phase 1 release features a robust **Resume Analyzer** that parses PDF uploads while preserving formatting, queries Gemini AI for structured insights, and presents actionable feedback (including categorized skills, strengths, weaknesses, and a resume score out of 10) in a beautiful, responsive dashboard.
+## Why is it "Agentic"?
+Unlike standard AI apps that follow a linear path, this system implements a **ReAct (Reasoning + Acting)** loop:
+- **Autonomous Tool Selection:** The LLM dynamically decides which tool to use (`resume_analyzer`, `jd_parser`, `job_matcher`) based on your query.
+- **Iterative Decision Making:** The system runs in a multi-step loop. After a tool runs, the AI observes the output and decides if it needs to call another tool or if it has enough information to finish.
+- **State-Aware Reasoning:** The orchestrator maintains a context state, allowing the agent to remember your resume even as you ask multiple follow-up questions.
 
-## Features (Phase 1)
-- **Advanced Resume Parsing:** Upload a PDF and automatically extract text while preserving layout using `pdfplumber`.
-- **Structured AI Insights:** Get granular feedback on Strengths, Weaknesses, Experience Analysis, and Extracted Skills using Google's Gemini Flash model.
-- **Ask AI:** A built-in AI assistant for any quick career-related queries.
-- **Modern UI:** Built with React 19, Tailwind CSS 4, and `shadcn/ui` for a premium, responsive user experience.
+## Key Features
+- **🕵️ Agentic Orchestrator:** A multi-step ReAct loop that handles complex queries like "Am I a good fit for this job?" by autonomously parsing both your resume and the job description.
+- **📄 Advanced Resume Analysis:** Extracts structured data (skills, strengths, weaknesses) while preserving context from PDF uploads.
+- **🎯 Intelligent Job Matching:** Calculates precise match scores and provides actionable "AI Insights" on how to bridge the gap.
+- **💬 Career Agent Chat:** A unified chat interface where you can talk to your resume data and get career advice.
+- **⚡ Dual-LLM Resilience:** Uses **Groq (Llama 3.3 70B)** as the primary engine for lightning-fast reasoning, with a seamless fallback to **Google Gemini 1.5 Flash**.
 
 ---
 
@@ -18,25 +23,21 @@ The current Phase 1 release features a robust **Resume Analyzer** that parses PD
 - **Framework:** React (`^19.2.4`) + TypeScript (`~6.0.2`)
 - **Build Tool:** Vite (`^8.0.4`)
 - **Styling:** Tailwind CSS (`^4.2.4`)
-- **UI Components:** `shadcn/ui` (`^4.5.0`)
-- **Icons:** `lucide-react` (`^1.11.0`)
-- **Routing:** `react-router-dom` (`^7.13.2`)
-- **Networking:** `axios` (`^1.15.0`)
+- **UI Components:** `shadcn/ui` & `lucide-react`
+- **Routing:** `react-router-dom`
 
 ### Backend
-- **Framework:** FastAPI (`0.135.3`) with Uvicorn (`0.44.0`)
-- **AI Integration:** `google-generativeai` (`0.8.6`)
-- **PDF Extraction:** `pdfplumber` (`0.11.9`)
-- **File Uploads:** `python-multipart` (`0.0.26`)
-- **Environment:** `python-dotenv` (`1.2.2`)
-- **Code Quality:** `black`, `isort`, `flake8`, `mypy`
+- **Framework:** FastAPI (`0.135.3`) with Uvicorn
+- **AI Engines:** Groq SDK & Google GenAI SDK (`google-genai`)
+- **PDF Extraction:** `pdfplumber`
+- **Code Quality:** `black`, `isort`, `flake8`, `mypy` (Strict Linting)
 
 ---
 
 ## Setup Instructions
 
 ### 1. Backend Setup
-Navigate to the `backend` directory, set up your virtual environment, and run the FastAPI server:
+Navigate to the `backend` directory, set up your virtual environment, and install dependencies:
 
 ```bash
 cd backend
@@ -44,16 +45,21 @@ python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
-*Make sure to create a `.env` file in the `backend` directory with your `GEMINI_API_KEY`.*
 
-Start the backend server:
+**Environment Variables:**
+Create a `.env` file in the `backend` directory:
+```env
+GEMINI_API_KEY=your_gemini_key
+GROQ_API_KEY=your_groq_key
+```
+
+Start the server:
 ```bash
 uvicorn main:app --reload
 ```
 
 ### 2. Frontend Setup
-In a new terminal, navigate to the `frontend` directory and start the Vite dev server:
-
+In a new terminal:
 ```bash
 cd frontend
 npm install
