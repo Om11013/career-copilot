@@ -62,34 +62,44 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         <nav className="flex-1 space-y-6 overflow-y-auto pr-2 custom-scrollbar">
           {/* Main Navigation */}
           <div className="space-y-1.5">
-            {mainNavigation.map((item) => {
-              const isActive = location.pathname === item.href;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={() => setIsOpen(false)}
-                >
-                  <Button
-                    variant="ghost"
-                    className={cn(
-                      'w-full justify-start gap-3 px-4 py-2.5 text-sm transition-all duration-300 rounded-xl',
-                      isActive
-                        ? 'bg-[#C97A5D]/10 text-[#C97A5D] font-semibold border border-[#C97A5D]/20 shadow-sm'
-                        : 'text-[#829AB1] hover:bg-[#829AB1]/10 hover:text-[#4A4A4A] border border-transparent',
-                    )}
+            {mainNavigation
+              .filter((item) => {
+                if (item.localOnly) {
+                  const isLocal =
+                    window.location.hostname === 'localhost' ||
+                    window.location.hostname === '127.0.0.1';
+                  return isLocal;
+                }
+                return true;
+              })
+              .map((item) => {
+                const isActive = location.pathname === item.href;
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    onClick={() => setIsOpen(false)}
                   >
-                    <item.icon
+                    <Button
+                      variant="ghost"
                       className={cn(
-                        'h-4 w-4',
-                        isActive ? 'text-[#C97A5D]' : '',
+                        'w-full justify-start gap-3 px-4 py-2.5 text-sm transition-all duration-300 rounded-xl',
+                        isActive
+                          ? 'bg-[#C97A5D]/10 text-[#C97A5D] font-semibold border border-[#C97A5D]/20 shadow-sm'
+                          : 'text-[#829AB1] hover:bg-[#829AB1]/10 hover:text-[#4A4A4A] border border-transparent',
                       )}
-                    />
-                    {item.name}
-                  </Button>
-                </Link>
-              );
-            })}
+                    >
+                      <item.icon
+                        className={cn(
+                          'h-4 w-4',
+                          isActive ? 'text-[#C97A5D]' : '',
+                        )}
+                      />
+                      {item.name}
+                    </Button>
+                  </Link>
+                );
+              })}
           </div>
 
           {/* Tools Section */}
@@ -97,34 +107,44 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
             <h3 className="px-4 text-[10px] font-bold uppercase tracking-wider text-[#829AB1]/60 mb-2">
               Tools (Advanced / Debug)
             </h3>
-            {toolNavigation.map((item) => {
-              const isActive = location.pathname === item.href;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={() => setIsOpen(false)}
-                >
-                  <Button
-                    variant="ghost"
-                    className={cn(
-                      'w-full justify-start gap-3 px-4 py-2 text-xs transition-all duration-300 rounded-xl',
-                      isActive
-                        ? 'bg-[#829AB1]/10 text-[#4A4A4A] font-medium border border-[#829AB1]/20'
-                        : 'text-[#829AB1]/70 hover:bg-[#829AB1]/5 hover:text-[#4A4A4A] border border-transparent',
-                    )}
+            {toolNavigation
+              .filter((item) => {
+                if ('localOnly' in item && item.localOnly) {
+                  const isLocal =
+                    window.location.hostname === 'localhost' ||
+                    window.location.hostname === '127.0.0.1';
+                  return isLocal;
+                }
+                return true;
+              })
+              .map((item) => {
+                const isActive = location.pathname === item.href;
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    onClick={() => setIsOpen(false)}
                   >
-                    <item.icon
+                    <Button
+                      variant="ghost"
                       className={cn(
-                        'h-3.5 w-3.5',
-                        isActive ? 'text-[#829AB1]' : '',
+                        'w-full justify-start gap-3 px-4 py-2 text-xs transition-all duration-300 rounded-xl',
+                        isActive
+                          ? 'bg-[#829AB1]/10 text-[#4A4A4A] font-medium border border-[#829AB1]/20'
+                          : 'text-[#829AB1]/70 hover:bg-[#829AB1]/5 hover:text-[#4A4A4A] border border-transparent',
                       )}
-                    />
-                    {item.name}
-                  </Button>
-                </Link>
-              );
-            })}
+                    >
+                      <item.icon
+                        className={cn(
+                          'h-3.5 w-3.5',
+                          isActive ? 'text-[#829AB1]' : '',
+                        )}
+                      />
+                      {item.name}
+                    </Button>
+                  </Link>
+                );
+              })}
           </div>
         </nav>
       </div>
